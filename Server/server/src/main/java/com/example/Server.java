@@ -9,7 +9,7 @@ public class Server implements GraphService{
 	private DynamicGraph graph;
 
 	public Server(){
-		graph = new DynamicGraph("Graph-1.txt");
+		graph = new DynamicGraph("graph.txt");
 	}
 
 	public static void main(String [] args) {
@@ -55,6 +55,7 @@ public class Server implements GraphService{
 
 			String[] operation =line.split(" ");
 			char queryType =operation[0].charAt(0);
+			if (queryType == 'F') break;
 			int u = Integer.parseInt(operation[1]);
 			int v = Integer.parseInt(operation[2]);
 
@@ -65,7 +66,8 @@ public class Server implements GraphService{
 				graph.delete(u, v);
 			}
 			else{
-				result.append(graph.shortestPath(u, v) + '\n');
+				result.append(graph.shortestPath(u, v));
+				result.append("\n");
 			}
 		}
 

@@ -20,6 +20,7 @@ public class DynamicGraph {
 
     private void createGraph(String filePath) {
         graph = new HashMap<>();
+        reversedGraph = new HashMap<>();
         try{
             FileInputStream fileInputStream = new FileInputStream(filePath);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
@@ -27,7 +28,7 @@ public class DynamicGraph {
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.charAt(0) == 'S') break;
                 String[] edge = line.split(" ");
-                int u = Integer.parseInt(edge[0]), v = Integer.parseInt(edge[0]);
+                int u = Integer.parseInt(edge[0]), v = Integer.parseInt(edge[1]);
                 if (!graph.containsKey(u)){
                     graph.put(u, new HashSet<Integer>());
                 }
