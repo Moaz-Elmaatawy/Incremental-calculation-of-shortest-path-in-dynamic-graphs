@@ -10,7 +10,7 @@ public class Client {
          Registry registry = LocateRegistry.getRegistry("localhost", 1099);
    
          // lookup the graph object
-         Graph graph = (Graph) registry.lookup("graph");
+         GraphService graph = (GraphService) registry.lookup("graphService");
          String graphName = graph.getName();
          
          System.out.println("Name:" + graphName);

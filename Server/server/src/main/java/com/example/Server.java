@@ -1,22 +1,28 @@
 package com.example;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject; 
 
-public class Server {
+public class Server implements GraphService{
+	private DynamicGraph graph;
+
+	public Server(){
+		graph = new DynamicGraph("Graph-1.txt");
+	}
+
 	public static void main(String [] args) {
 		try {
 			
 			System.out.println("Server is booting....");
-
 			System.setProperty("java.rmi.server.hostname","localhost"); 
 
-            Graph graph = new DynamicGraph("Graph 1");
+            GraphService graphService = new Server();
 
 
 		    // Export object before registered in Registry. 
-		    Graph stub = (Graph) UnicastRemoteObject.exportObject(graph, 0);
+		    GraphService stub = (GraphService) UnicastRemoteObject.exportObject(graphService, 0);
 
 			
             // create the RMI registry.
@@ -24,7 +30,7 @@ public class Server {
 			
             // Registered the exported object in rmi registry so that client can
             // lookup in this registry and call the object methods.
-            registry.bind("graph", stub);
+            registry.bind("graphService", stub);
 			System.out.println("server ready .......");
 
 		} catch (Exception e) {
@@ -32,5 +38,37 @@ public class Server {
 
 		}
 
+	}
+
+	@Override
+	public String getName() throws RemoteException {
+		return "RMI test";
+	}
+
+	@Override
+	public String processBatch(String batch) throws RemoteException {
+
+		StringBuilder result = new StringBuilder();
+		String[] batchLines=batch.split("\n");
+
+		for(String line : batchLines){
+
+			String[] operation =line.split(" ");
+			char queryType =operation[0].charAt(0);
+			int u = Integer.parseInt(operation[1]);
+			int v = Integer.parseInt(operation[2]);
+
+			if(queryType == 'A'){
+				graph.add(u, v);
+			}
+			else if(queryType == 'D'){
+				graph.delete(u, v);
+			}
+			else{
+				result.append(graph.shortestPath(u, v) + '\n');
+			}
+		}
+
+		return result.toString();
 	}
 }
