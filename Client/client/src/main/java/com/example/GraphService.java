@@ -7,5 +7,7 @@ public interface GraphService extends Remote{
 
     public String getName() throws RemoteException;
 
-    public String processBatch(String batch) throws RemoteException; 
+    public String processBatch(String batch , String algoritm) throws RemoteException;
+
+    public int getInitialSize()throws RemoteException;
 }
