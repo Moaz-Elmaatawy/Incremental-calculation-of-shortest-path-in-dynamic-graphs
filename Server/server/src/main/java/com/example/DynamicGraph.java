@@ -2,7 +2,6 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,6 +39,7 @@ public class DynamicGraph {
                 reversedGraph.get(v).add(u);
 
             }
+            bufferedReader.close();
         } catch (Exception e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
@@ -67,7 +67,42 @@ public class DynamicGraph {
         }
     }
     
-    public int shortestPath(int u, int v) {
+    public int shortestPath(int u, int v , String algorithm) {
+        if(algorithm == "BFS")
+            return BFS(u,v);
+        else 
+            return bidirectionalBFS(u, v);
+    }
+
+    int BFS(int u, int v){
+        if (u == v) return 0;
+
+        HashMap<Integer, Integer> visited= new HashMap<>();
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        visited.put(u, 0);
+        queue.add(u);
+
+        while (!queue.isEmpty()) {
+            int current= queue.remove();
+            if (graph.containsKey(current)) {
+                for (int neighbor : graph.get(current)) {
+                    if (!visited.containsKey(neighbor)) {
+                        if(neighbor == v)
+                            return visited.get(current) + 1;
+                            
+                        visited.put(neighbor, visited.get(current) + 1);
+                        queue.add(neighbor);
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+    
+    int bidirectionalBFS(int u, int v){
         if (u == v) return 0;
 
         HashMap<Integer, Integer> visitedForward = new HashMap<>();
@@ -113,5 +148,8 @@ public class DynamicGraph {
 
         return -1;
     }
-    
+
+    int getGraphSize(){
+        return graph.size();
+    }
 }
