@@ -1,0 +1,28 @@
+2023-05-08 03:09:56.213 [main] INFO  com.example.Main - Starting.....
+2023-05-08 03:09:56.343 [Thread-0] INFO  com.example.Client - Graph Initial Size = 7
+2023-05-08 03:09:56.345 [Thread-0] INFO  com.example.Client - threat ID = 14
+response time = 1
+algorithm Type = BFS
+updata Percentage = 67
+batchSize = 10
+request = 
+Q 6 7
+A 4 7
+Q 7 4
+A 5 4
+A 6 9
+Q 6 7
+A 7 4
+Q 7 7
+Q 3 5
+A 2 1
+F
+response = 
+-1
+-1
+-1
+0
+1
+
+----------------------------
+

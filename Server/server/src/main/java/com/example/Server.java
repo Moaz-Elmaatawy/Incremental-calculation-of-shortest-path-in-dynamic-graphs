@@ -3,9 +3,18 @@ package com.example;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject; 
+import java.rmi.server.UnicastRemoteObject;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager; 
 
 public class Server implements GraphService{
+	private Logger logger = LogManager.getLogger(Server.class);
+	/*
+	How to use logger
+	logger.info("message");
+	logger.error("message");
+	 * */
+	 
 	private DynamicGraph graph;
 
 	public Server(){
@@ -46,7 +55,7 @@ public class Server implements GraphService{
 	}
 
 	@Override
-	public String processBatch(String batch) throws RemoteException {
+	public String processBatch(String batch, String algoritm) throws RemoteException {
 
 		StringBuilder result = new StringBuilder();
 		String[] batchLines=batch.split("\n");
@@ -66,11 +75,16 @@ public class Server implements GraphService{
 				graph.delete(u, v);
 			}
 			else{
-				result.append(graph.shortestPath(u, v));
+				result.append(graph.shortestPath(u, v , algoritm));
 				result.append("\n");
 			}
 		}
 
 		return result.toString();
+	}
+
+	@Override
+	public int getInitialSize() throws RemoteException {
+		return graph.getGraphSize();
 	}
 }
