@@ -50,12 +50,12 @@ public class Server implements GraphService{
 	}
 
 	@Override
-	public String getName() throws RemoteException {
+	public synchronized String getName() throws RemoteException {
 		return "RMI test";
 	}
 
 	@Override
-	public String processBatch(String batch, String algoritm) throws RemoteException {
+	public synchronized String processBatch(String batch, String algoritm) throws RemoteException {
 
 		StringBuilder result = new StringBuilder();
 		String[] batchLines=batch.split("\n");
@@ -84,7 +84,7 @@ public class Server implements GraphService{
 	}
 
 	@Override
-	public int getInitialSize() throws RemoteException {
+	public synchronized int getInitialSize() throws RemoteException {
 		return graph.getGraphSize();
 	}
 }
