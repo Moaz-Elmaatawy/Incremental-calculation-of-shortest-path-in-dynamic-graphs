@@ -2,19 +2,43 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager; 
 
 
 public class DynamicGraph {
+    private static Logger logger = LogManager.getLogger(DynamicGraph.class);
     private HashMap<Integer, HashSet<Integer>> graph;
     private HashMap<Integer, HashSet<Integer>> reversedGraph;
+    private int graphInitialSize = 0;
 
     public DynamicGraph(String filePath){
         createGraph(filePath);
+    }
+
+    public static void generateGraph(String filePath, int graphSize, double denistyRatio){
+        int edgesNumber = (int)(graphSize * (graphSize - 1) * denistyRatio);
+        try {
+            FileWriter writer = new FileWriter(filePath);
+            Random rand = new Random(graphSize);
+            for(int i = 0; i < edgesNumber; i++){
+                writer.write(rand.nextInt(graphSize) + " " + rand.nextInt(graphSize) + "\n");
+            }
+            writer.write("S");
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void createGraph(String filePath) {
@@ -37,11 +61,12 @@ public class DynamicGraph {
                     reversedGraph.put(v, new HashSet<Integer>());
                 }
                 reversedGraph.get(v).add(u);
-
+                
+                graphInitialSize = Math.max(graphInitialSize, Math.max(u, v));
             }
             bufferedReader.close();
         } catch (Exception e) {
-            System.out.println("Error reading file: " + e.getMessage());
+            logger.error("Error reading file: " + e.getMessage());
         }
     }
 
@@ -149,7 +174,7 @@ public class DynamicGraph {
         return -1;
     }
 
-    int getGraphSize(){
-        return graph.size();
+    int getGraphInitialSize(){
+        return graphInitialSize;
     }
 }

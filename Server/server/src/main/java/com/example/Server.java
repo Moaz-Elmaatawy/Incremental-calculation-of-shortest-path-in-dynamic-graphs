@@ -8,17 +8,13 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager; 
 
 public class Server implements GraphService{
-	private Logger logger = LogManager.getLogger(Server.class);
-	/*
-	How to use logger
-	logger.info("message");
-	logger.error("message");
-	 * */
+	private static Logger logger = LogManager.getLogger(Server.class);
 	 
 	private DynamicGraph graph;
 
 	public Server(){
-		graph = new DynamicGraph("graph.txt");
+		//DynamicGraph.generateGraph("graphs/graphStand.txt", 5000, 0.0002);
+		graph = new DynamicGraph("graphs/graphStand.txt");
 	}
 
 	public static void main(String [] args) {
@@ -43,7 +39,7 @@ public class Server implements GraphService{
 			System.out.println("server ready .......");
 
 		} catch (Exception e) {
-			System.out.println("Server error" + e);
+			logger.error("Server error" + e);
 
 		}
 
@@ -85,6 +81,6 @@ public class Server implements GraphService{
 
 	@Override
 	public synchronized int getInitialSize() throws RemoteException {
-		return graph.getGraphSize();
+		return graph.getGraphInitialSize();
 	}
 }

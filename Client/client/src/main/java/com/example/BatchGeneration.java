@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BatchGeneration {
     private int graphSize;
-    private final double  EXPANTION_FACTOR= 1.5;
+    private final double  EXPANTION_FACTOR= 1.01;
 
     public BatchGeneration(int graphInitialSize){
         this.graphSize= (int) (graphInitialSize*EXPANTION_FACTOR);
@@ -21,7 +21,7 @@ public class BatchGeneration {
             
             if(operation < updataPercentage){
                 //Addition
-                if(rand.nextInt(1) == 0)
+                if(rand.nextInt(2) == 0)
                     batch.append('A');
                 //Deletion
                 else 

@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 public class Main {
     private static Logger logger = LogManager.getLogger(Main.class);
     private static final int RAMP_UP_TIME=10;
-    private static final int NUM_CLIENTS = 5;
+    private static final int NUM_CLIENTS = 20;
 
     public static void main(String[] args) {
         logger.info("Starting.....");
