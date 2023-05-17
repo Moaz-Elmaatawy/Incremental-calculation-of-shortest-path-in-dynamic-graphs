@@ -65,6 +65,7 @@ public class DynamicGraph {
                 graphInitialSize = Math.max(graphInitialSize, Math.max(u, v));
             }
             bufferedReader.close();
+            logger.info("Graph created with initial size: " + graphInitialSize);
         } catch (Exception e) {
             logger.error("Error reading file: " + e.getMessage());
         }

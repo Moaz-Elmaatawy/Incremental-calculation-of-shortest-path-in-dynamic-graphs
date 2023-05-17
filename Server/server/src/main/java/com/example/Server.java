@@ -21,8 +21,9 @@ public class Server implements GraphService{
 		try {
 			
 			System.out.println("Server is booting....");
+			logger.info("Server is booting....");
 			System.setProperty("java.rmi.server.hostname","localhost"); 
-
+			System.setProperty("log4j.configurationFile", "src/main/java/resources/log4j2.xml");
             GraphService graphService = new Server();
 
 
@@ -37,6 +38,7 @@ public class Server implements GraphService{
             // lookup in this registry and call the object methods.
             registry.bind("graphService", stub);
 			System.out.println("server ready .......");
+			logger.info("server ready .......");
 
 		} catch (Exception e) {
 			logger.error("Server error" + e);
@@ -52,7 +54,7 @@ public class Server implements GraphService{
 
 	@Override
 	public synchronized String processBatch(String batch, String algoritm) throws RemoteException {
-
+		logger.info("Server started a batch");
 		StringBuilder result = new StringBuilder();
 		String[] batchLines=batch.split("\n");
 
@@ -66,21 +68,26 @@ public class Server implements GraphService{
 
 			if(queryType == 'A'){
 				graph.add(u, v);
+				logger.info("Edge added from " + u + " to " + v);
 			}
 			else if(queryType == 'D'){
 				graph.delete(u, v);
+				logger.info("Edge removed from " + u + " to " + v);
 			}
 			else{
-				result.append(graph.shortestPath(u, v , algoritm));
+				int out = graph.shortestPath(u, v , algoritm);
+				logger.info("Shortest path between " + u + " and " + v + " usign " + algoritm + " is: " + out);
+				result.append(out);
 				result.append("\n");
 			}
 		}
-
+		logger.info("Server finnished a batch");
 		return result.toString();
 	}
 
 	@Override
 	public synchronized int getInitialSize() throws RemoteException {
+		logger.info("Client requested graph initial size: " + graph.getGraphInitialSize());
 		return graph.getGraphInitialSize();
 	}
 }
