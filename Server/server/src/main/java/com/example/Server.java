@@ -23,7 +23,6 @@ public class Server implements GraphService{
 			System.out.println("Server is booting....");
 			logger.info("Server is booting....");
 			System.setProperty("java.rmi.server.hostname","localhost"); 
-			System.setProperty("log4j.configurationFile", "src/main/java/resources/log4j2.xml");
             GraphService graphService = new Server();
 
 
