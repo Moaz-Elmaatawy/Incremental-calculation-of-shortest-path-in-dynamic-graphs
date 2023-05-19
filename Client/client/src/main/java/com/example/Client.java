@@ -4,6 +4,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Random;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.LogManager;
 
 public class Client extends Thread{
@@ -16,6 +17,7 @@ public class Client extends Thread{
    public void run() {
       
       try {
+         ThreadContext.put("threadName", Thread.currentThread().getName());
          //System.err.println("ClientID: "+ Thread.currentThread().getId());
 
          Registry registry = LocateRegistry.getRegistry("localhost", 1099);
